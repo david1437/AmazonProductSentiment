@@ -1,0 +1,4 @@
+data/reviews/*
+!data/reviews/.gitkeep
+data/ratings/*
+!data/ratings/.gitkeep
