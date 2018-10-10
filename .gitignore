@@ -1,4 +1,5 @@
 .DS_*
+data/*.csv
 data/reviews/*
 !data/reviews/.gitkeep
 data/ratings/*
