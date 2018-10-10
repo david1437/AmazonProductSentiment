@@ -1,3 +1,4 @@
+.DS_*
 data/reviews/*
 !data/reviews/.gitkeep
 data/ratings/*
