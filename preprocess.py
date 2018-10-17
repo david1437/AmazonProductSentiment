@@ -34,10 +34,12 @@ def convert_review_text_sentiment_score(productDict):
                 sum_ratings += review[0][1]
                 count += 1
         sentiment_scores_reviews[product] = (sum_polarity / count, sum_ratings / count)
-    return sentiment_scores_reviews
+    return sorted(sentiment_scores_reviews.items(), key=lambda value: (value[1][0] + value[1][1]) / 2)
 
 def review_to_sentiment(review_text):
     lines_list = tokenize.sent_tokenize(review_text)
     polarities = [sid.polarity_scores(line)['compound'] for line in lines_list]
     polarity_list = [p if p >= 0.0 else 1+p for p in polarities]
     return np.mean(polarity_list)
+
+print(convert_review_text_sentiment_score(group_by_product(read_data('./data/reviews_Clothing_Shoes_and_Jewelry_5.json.gz_combined.csv'))))
