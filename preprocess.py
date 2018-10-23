@@ -24,7 +24,7 @@ def group_by_product(reviews):
     return productKeyToReviews
 
 def convert_review_text_sentiment_score(productDict):
-    sentiment_scores_reviews = {}
+    sentiment_scores_reviews = []
     for product, reviews in productDict.items():
         sum_polarity, sum_ratings = 0.0, 0.0
         count = 0
@@ -33,8 +33,8 @@ def convert_review_text_sentiment_score(productDict):
                 sum_polarity += review_to_sentiment(review[0][0])
                 sum_ratings += review[0][1]
                 count += 1
-        sentiment_scores_reviews[product] = (sum_polarity / count, sum_ratings / count)
-    return sorted(sentiment_scores_reviews.items(), key=lambda value: (value[1][0] + value[1][1]) / 2)
+        sentiment_scores_reviews.append((product, sum_polarity / count, sum_ratings / count))
+    return sorted(sentiment_scores_reviews, key=lambda value: (value[1] + value[2]) / 2)
 
 def review_to_sentiment(review_text):
     lines_list = tokenize.sent_tokenize(review_text)
