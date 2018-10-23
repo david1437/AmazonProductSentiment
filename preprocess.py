@@ -26,20 +26,28 @@ def group_by_product(reviews):
 def convert_review_text_sentiment_score(productDict):
     sentiment_scores_reviews = []
     for product, reviews in productDict.items():
-        sum_polarity, sum_ratings = 0.0, 0.0
+        sum_pos_polarity, sum_ratings,sum_neg_polarity = 0.0, 0.0, 0.0
         count = 0
         for review in reviews:
             if isinstance(review[0][0], str):
-                sum_polarity += review_to_sentiment(review[0][0])
+                pos, neg = review_to_sentiment(review[0][0])
+                sum_pos_polarity += pos
+                sum_neg_polarity += neg
                 sum_ratings += review[0][1]
                 count += 1
-        sentiment_scores_reviews.append((product, sum_polarity / count, sum_ratings / count))
-    return sorted(sentiment_scores_reviews, key=lambda value: (value[1] + value[2]) / 2)
+        sentiment_scores_reviews.append((product, sum_pos_polarity / count, sum_neg_polarity / count, sum_ratings / count))
+    return sentiment_scores_reviews
 
 def review_to_sentiment(review_text):
+    polarities_pos = []
+    polarities_neg = []
+    
     lines_list = tokenize.sent_tokenize(review_text)
-    polarities = [sid.polarity_scores(line)['compound'] for line in lines_list]
-    polarity_list = [p if p >= 0.0 else 1+p for p in polarities]
-    return np.mean(polarity_list)
+    for line in lines_list:
+        polarity = sid.polarity_scores(line)
+        polarities_pos.append(polarity['pos'])
+        polarities_neg.append(polarity['neg'])
+        
+    return np.mean(polarities_pos) , np.mean(polarities_neg)
 
 print(convert_review_text_sentiment_score(group_by_product(read_data('./data/reviews_Clothing_Shoes_and_Jewelry_5.json.gz_combined.csv'))))
