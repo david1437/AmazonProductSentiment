@@ -22,3 +22,4 @@ def network(x,y):
         scores = model.evaluate(x_test,y_test, verbose=0)[1]*100
         
         print('Learning rate {0} gave accuracy of {1} %'.format(rate,scores))
+        

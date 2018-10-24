@@ -4,6 +4,7 @@ import math
 import nltk
 import clustering
 import graphing
+import network
 
 nltk.download('vader_lexicon')
 nltk.download('punkt')
@@ -54,4 +55,8 @@ def review_to_sentiment(review_text):
     return np.mean(polarities_pos) , np.mean(polarities_neg)
 
 
-graphing.graphs(name='games', container=convert_review_text_sentiment_score(group_by_product(read_data('./data/reviews_Video_Games_5.json.gz_combined.csv'))))
+container = convert_review_text_sentiment_score(group_by_product(read_data('./data/reviews_Video_Games_5.json.gz_combined.csv')))
+
+y = np.asarray([element[3] for element in container])
+x = np.asarray([[element[1],element[2]] for element in container])
+network.network(x,y)
