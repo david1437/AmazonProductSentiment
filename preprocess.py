@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 import math
 import nltk
+import clustering
+import graphing
+
 nltk.download('vader_lexicon')
 nltk.download('punkt')
 
@@ -50,4 +53,5 @@ def review_to_sentiment(review_text):
         
     return np.mean(polarities_pos) , np.mean(polarities_neg)
 
-print(convert_review_text_sentiment_score(group_by_product(read_data('./data/reviews_Clothing_Shoes_and_Jewelry_5.json.gz_combined.csv'))))
+
+graphing.graphs(name='games', container=convert_review_text_sentiment_score(group_by_product(read_data('./data/reviews_Video_Games_5.json.gz_combined.csv'))))
